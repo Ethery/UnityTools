@@ -1,0 +1,16 @@
+{
+    "name": "UnityTools.AI.BehaviourTree.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:eb13acecb57aa9243b5f4c2f85f6d06d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

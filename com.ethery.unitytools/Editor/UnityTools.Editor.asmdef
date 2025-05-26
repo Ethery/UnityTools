@@ -1,0 +1,20 @@
+{
+    "name": "UnityTools.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:95ee4911e5d168b488af44c41f0432b6",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:808cd714d45469441b88745d25bfff83"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
