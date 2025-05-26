@@ -49,8 +49,10 @@ public static class GameBuilder
 			locationPathName = $"{buildPath}/Game/Game.exe",
 			scenes = scenesPath,
 			options = BuildOptions.CleanBuildCache | BuildOptions.StrictMode,
-			target = BuildTarget.StandaloneWindows64
+			target = EditorUserBuildSettings.activeBuildTarget
 		};
+
+
 		var report = BuildPipeline.BuildPlayer(options);
 
 		if(report.summary.result == BuildResult.Succeeded)
