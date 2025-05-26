@@ -1,15 +1,10 @@
 {
   "name": "com.ethery.unitytools",
-  "displayName": "UnityTools",
-  "version": "0.0.1",
-  "description": "",
-  "keywords": [
-  ],
-  "category": "Custom Tools",
-  "dependencies": {
-  },
-  "repository": {
-    "url": "https://github.com/Ethery/UnityTools.git",
-    "type": "git"
+  "version": "1.0.0",
+  "displayName": "Unity tools",
+  "description": "This is an example package",
+  "unity": "2022.3",
+  "dependencies":{
+	"com.unity.inputsystem": "1.7.0"
   }
 }
