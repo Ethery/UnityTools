@@ -1,0 +1,15 @@
+{
+  "name": "com.ethery.unitytools",
+  "displayName": "UnityTools",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [
+  ],
+  "category": "Custom Tools",
+  "dependencies": {
+  },
+  "repository": {
+    "url": "https://github.com/Ethery/UnityTools.git",
+    "type": "git",
+  },
+}
