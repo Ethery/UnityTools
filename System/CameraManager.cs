@@ -31,8 +31,9 @@ public class CameraManager : Singleton<CameraManager>
     private Vector3 m_dragUpdatedScreenPos;
     private Plane m_mouseDragPlane;
     private Ray m_newCamPosProjectionRay;
-    private Ray m_dragRay;
-    private float m_raycastDistance;
+    private Vector3 m_mousePosition;
+
+	private float m_raycastDistance;
     private bool m_speedUp;
 
     private bool m_updateFrame;
@@ -53,7 +54,14 @@ public class CameraManager : Singleton<CameraManager>
 	private void OnEnable()
 	{
 		m_wantedMovement = Vector3.zero;
-		m_mouseDragPlane = new Plane(Vector3.up, 0);
+        if (m_isSideView)
+        {
+			m_mouseDragPlane = new Plane(Vector3.back,Camera.main.transform.position.z);
+		}
+        else
+        {
+            m_mouseDragPlane = new Plane(Vector3.up, 0);
+        }
 
 		m_OnCameraMovementEvent = new InputManager.InputEvent(OnCameraMovement, InputActionPhase.Performed);
 		m_OnCameraMovementEndEvent = new InputManager.InputEvent(OnCameraMovementEnd, InputActionPhase.Canceled);
@@ -98,14 +106,14 @@ public class CameraManager : Singleton<CameraManager>
 
             if (m_dragCamera)
             {
-
-                if (m_mouseDragPlane.Raycast(m_dragRay, out float enter))
+				Ray dragRay = m_currentCamera.ScreenPointToRay(m_mousePosition);
+				if (m_mouseDragPlane.Raycast(dragRay, out float enter))
                 {
                     //Get the point that is clicked
-                    m_dragUpdatedGroundPos = m_dragRay.GetPoint(enter);
+                    m_dragUpdatedGroundPos = dragRay.GetPoint(enter);
 
-                    Vector3 mousePosition = Input.mousePosition;
-                    mousePosition.z = m_currentCamera.nearClipPlane;
+                    Vector3 mousePosition = m_mousePosition;
+					mousePosition.z = m_currentCamera.nearClipPlane;
                     m_dragUpdatedScreenPos = m_currentCamera.ScreenToWorldPoint(mousePosition);
 
                     Vector3 camDirection = m_dragUpdatedScreenPos - m_dragUpdatedGroundPos;
@@ -167,15 +175,15 @@ public class CameraManager : Singleton<CameraManager>
 
     private void OnCameraDrag_Performed(InputAction action)
     {
-        //Create a ray from the Mouse click position
-        m_dragRay = m_currentCamera.ScreenPointToRay(action.ReadValue<Vector2>());
+        m_mousePosition = action.ReadValue<Vector2>();
+		//Create a ray from the Mouse click position
         if (!m_dragCamera)
         {
-
-            if (m_mouseDragPlane.Raycast(m_dragRay, out float enter))
+		    Ray dragRay = m_currentCamera.ScreenPointToRay(m_mousePosition);
+            if (m_mouseDragPlane.Raycast(dragRay, out float enter))
             {
                 //Get the point that is clicked
-                Vector3 hitPoint = m_dragRay.GetPoint(enter);
+                Vector3 hitPoint = dragRay.GetPoint(enter);
                 m_dragCamera = true;
                 m_dragGroundReferencePoint = hitPoint;
             }
