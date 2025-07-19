@@ -152,10 +152,9 @@ namespace UnityTools.Systems.Inputs
 		private void OnActionTriggered(InputAction.CallbackContext obj)
 		{
 			string inputString = $"{obj.action.actionMap.name}.{obj.action.name}";
-			Debug.Log($"Action Triggered {inputString}");
+			
 			if(IsMouseOnUI())
 				return;
-
 
             if (m_inputs.ContainsKey(inputString))
 			{
