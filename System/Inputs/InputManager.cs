@@ -8,7 +8,6 @@ using UnityEngine.InputSystem.UI;
 namespace UnityTools.Systems.Inputs
 {
 	[RequireComponent(typeof(BaseInputModule))]
-	[RequireComponent(typeof(PlayerInput))]
 	public class InputManager : Singleton<InputManager>
 	{
 		#region Classes
@@ -138,27 +137,25 @@ namespace UnityTools.Systems.Inputs
 			m_inputs.Clear();
 			m_events.Clear();
 
-			InputActionAsset asset = GetComponent<InputSystemUIInputModule>().actionsAsset;
-
-			foreach(InputActionMap map in asset.actionMaps)
+			foreach(InputActionMap map in m_inputsAsset.actionMaps)
 			{
-				foreach(InputAction action in map.actions)
+				map.actionTriggered += OnActionTriggered;
+				foreach (InputAction action in map.actions)
 				{
 					Input input = new Input(action.name, map.name);
 					m_inputs.Add(input.ToString(), input);
 					Debug.Log($"Added Input {action.name} to {nameof(InputManager)}.{nameof(m_inputs)}");
 				}
 			}
-
-			GetComponent<PlayerInput>().onActionTriggered += OnActionTriggered;
 		}
 
 		private void OnActionTriggered(InputAction.CallbackContext obj)
 		{
+			string inputString = $"{obj.action.actionMap.name}.{obj.action.name}";
+			Debug.Log($"Action Triggered {inputString}");
 			if(IsMouseOnUI())
 				return;
 
-			string inputString = $"{obj.action.actionMap.name}.{obj.action.name}";
 
             if (m_inputs.ContainsKey(inputString))
 			{
@@ -184,7 +181,11 @@ namespace UnityTools.Systems.Inputs
 
 		protected override void OnDestroy()
 		{
-			GetComponent<PlayerInput>().onActionTriggered -= OnActionTriggered;
+			foreach (InputActionMap map in m_inputsAsset.actionMaps)
+			{
+				map.actionTriggered -= OnActionTriggered;
+			}
+
 			m_inputs.Clear();
 			m_events.Clear();
 			base.OnDestroy();
@@ -193,6 +194,8 @@ namespace UnityTools.Systems.Inputs
 		private static Dictionary<string, Input> m_inputs = new Dictionary<string, Input>();
 
 		private Dictionary<Input, HashSet<InputEvent>> m_events = new Dictionary<Input, HashSet<InputEvent>>();
+
+		[SerializeField] private InputActionAsset m_inputsAsset;
 		#endregion
 	}
 }
