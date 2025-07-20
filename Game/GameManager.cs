@@ -12,14 +12,25 @@ namespace UnityTools.Game
 public abstract class BaseGameRules : ScriptableObject
 { }
 
+[Serializable]
+public abstract class BaseGameDatas : MonoBehaviour
+{ }
+
 public class GameManager : Singleton<GameManager>
 {
-	public BaseGameRules GameRules => m_gameRules;
-
-
 	public StateMachine<GameState> GameStates;
 
     public string StartScene => m_startScene.ScenePath;
+
+	public T GetGameRules<T>() where T : BaseGameRules
+	{
+		return m_gameRules as T;
+	}
+
+	public T GetGameDatas<T>() where T : BaseGameDatas
+	{
+		return m_gameDatas as T;
+	}
 
 	protected override void Awake()
 	{
@@ -37,6 +48,9 @@ public class GameManager : Singleton<GameManager>
 
 	[SerializeField]
 	private BaseGameRules m_gameRules;
+
+	[SerializeField]
+	private BaseGameDatas m_gameDatas;
 }
 
 
