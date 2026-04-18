@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
 
 namespace UnityTools.Systems.Inputs
 {
@@ -95,11 +94,11 @@ namespace UnityTools.Systems.Inputs
 				//Debug.LogError($"Can't register Input because InputManager Instance is null");
 				return;
 			}
-			if(register)
+			if (register)
 			{
-				if(Instance.m_events.ContainsKey(input))
+				if (Instance.m_events.ContainsKey(input))
 				{
-					if(!Instance.m_events[input].Add(eventToCall))
+					if (!Instance.m_events[input].Add(eventToCall))
 					{
 						UnityEngine.Debug.LogError($"An event with the same parameters already exists for {input}");
 					}
@@ -112,12 +111,12 @@ namespace UnityTools.Systems.Inputs
 			}
 			else
 			{
-				if(Instance.m_events.ContainsKey(input))
+				if (Instance.m_events.ContainsKey(input))
 				{
-					if(Instance.m_events[input].Contains(eventToCall))
+					if (Instance.m_events[input].Contains(eventToCall))
 					{
 						Instance.m_events[input].Remove(eventToCall);
-						if(Instance.m_events[input].Count <= 0)
+						if (Instance.m_events[input].Count <= 0)
 						{
 							Instance.m_events.Remove(input);
 							Debug.Log($"Unregistered event on {input}");
@@ -137,7 +136,7 @@ namespace UnityTools.Systems.Inputs
 			m_inputs.Clear();
 			m_events.Clear();
 
-			foreach(InputActionMap map in m_inputsAsset.actionMaps)
+			foreach (InputActionMap map in m_inputsAsset.actionMaps)
 			{
 				map.actionTriggered += OnActionTriggered;
 				foreach (InputAction action in map.actions)
@@ -152,18 +151,18 @@ namespace UnityTools.Systems.Inputs
 		private void OnActionTriggered(InputAction.CallbackContext obj)
 		{
 			string inputString = $"{obj.action.actionMap.name}.{obj.action.name}";
-			
-			if(IsMouseOnUI())
+
+			if (IsMouseOnUI())
 				return;
 
-            if (m_inputs.ContainsKey(inputString))
+			if (m_inputs.ContainsKey(inputString))
 			{
 				Input input = m_inputs[inputString];
-				if(m_events.ContainsKey(input))
+				if (m_events.ContainsKey(input))
 				{
-					foreach(InputEvent eventToCall in m_events[input])
+					foreach (InputEvent eventToCall in m_events[input])
 					{
-						if(eventToCall.EventType == obj.phase)
+						if (eventToCall.EventType == obj.phase)
 						{
 							eventToCall.Callback(obj.action);
 						}

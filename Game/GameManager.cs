@@ -14,9 +14,19 @@ namespace UnityTools.Game
 
 	public class GameManager : Singleton<GameManager>
 	{
-		public StateMachine<GameState> GameStates;
-
 		public string StartScene => m_startScene.ScenePath;
+
+		[SerializeField]
+		private ScenePicker m_startScene;
+	}
+
+
+	public class GameManager<T> : GameManager
+		where T : GameManager<T>
+	{
+		public new static T Instance => (T)GameManager.Instance;
+
+		public StateMachine<GameState> GameStates;
 
 		public T GetGameRules<T>() where T : BaseGameRules
 		{
@@ -32,15 +42,16 @@ namespace UnityTools.Game
 		{
 			base.Awake();
 			GameStates = new StateMachine<GameState>(new DefaultGameState());
+			if (m_gameDatas != null)
+			{
+				DontDestroyOnLoad(m_gameDatas);
+			}
 		}
 
 		private void Update()
 		{
 			GameStates.Tick(Time.deltaTime);
 		}
-
-		[SerializeField]
-		private ScenePicker m_startScene;
 
 		[SerializeField]
 		private BaseGameRules m_gameRules;

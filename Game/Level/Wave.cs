@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityTools.Systems.Collections;
 
 namespace UnityTools.Game
 {
@@ -40,8 +38,6 @@ namespace UnityTools.Game
 
 		public void Update()
 		{
-			if (!GameManager.IsInstanced)
-				return;
 			if (m_currentSpawnIndex < SpawnConfigs.Count)
 			{
 				if (CanSpawn())
@@ -59,9 +55,9 @@ namespace UnityTools.Game
 		{
 			SpawnConfig spawnable = SpawnConfigs[m_currentSpawnIndex];
 			Debug.Log($"Spawning {spawnable.Prefab.name}");
-			if(m_spawnPoint == null)
+			if (m_spawnPoint == null)
 			{
-				Debug.LogWarning($"No spawn point referenced for {this}, using self to replace it.",this);
+				Debug.LogWarning($"No spawn point referenced for {this}, using self to replace it.", this);
 				m_spawnPoint = transform;
 			}
 			LastSpawned = Instantiate(spawnable.Prefab, m_spawnPoint.position, m_spawnPoint.rotation, m_spawnPoint);
