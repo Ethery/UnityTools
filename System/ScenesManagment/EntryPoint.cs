@@ -22,7 +22,7 @@ public class EntryPoint : MonoBehaviour
 			}
 			else
 			{
-				SceneManager.LoadScene(GameManager.Instance.StartScene);
+				GameManager.Instance.LoadStartScene();
 			}
 		}
 	}

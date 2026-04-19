@@ -1,6 +1,7 @@
 using StateMachine;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UnityTools.Game
 {
@@ -18,6 +19,11 @@ namespace UnityTools.Game
 
 		[SerializeField]
 		private ScenePicker m_startScene;
+
+		public virtual void LoadStartScene()
+		{
+			SceneManager.LoadScene(StartScene);
+		}
 
 		/// <summary>
 		/// Called when loading any scene without save.
