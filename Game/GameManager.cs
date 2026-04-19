@@ -12,16 +12,26 @@ namespace UnityTools.Game
 	public abstract class BaseGameDatas : MonoBehaviour
 	{ }
 
-	public class GameManager : Singleton<GameManager>
+	public abstract class GameManager : Singleton<GameManager>
 	{
 		public string StartScene => m_startScene.ScenePath;
 
 		[SerializeField]
 		private ScenePicker m_startScene;
+
+		/// <summary>
+		/// Called when loading any scene without save.
+		/// </summary>
+		public abstract void StartGame();
+
+		/// <summary>
+		/// Called when asking to start a new game.
+		/// </summary>
+		public abstract void StartNewGame();
 	}
 
 
-	public class GameManager<T> : GameManager
+	public abstract class GameManager<T> : GameManager
 		where T : GameManager<T>
 	{
 		public new static T Instance => (T)GameManager.Instance;

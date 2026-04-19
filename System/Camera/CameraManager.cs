@@ -82,6 +82,8 @@ public class CameraManager : Singleton<CameraManager>
 	{
 		if (m_currentCamera == null)
 			m_currentCamera = Camera.main;
+
+		CameraBounds bounds = FindFirstObjectByType<CameraBounds>();
 		if (m_currentCamera != null)
 		{
 			if (m_wantedMovement != Vector2.zero)
@@ -102,8 +104,11 @@ public class CameraManager : Singleton<CameraManager>
 										   (m_speedUp ? m_cameraSpeedMultiplier : 1);
 				}
 
-				m_currentCamera.transform.position = m_cameraTargetPos;
-				m_updateFrame = true;
+				if (bounds.Bounds.Contains(m_cameraTargetPos))
+				{
+					m_currentCamera.transform.position = m_cameraTargetPos;
+					m_updateFrame = true;
+				}
 			}
 
 			if (m_dragCamera)
@@ -132,8 +137,11 @@ public class CameraManager : Singleton<CameraManager>
 
 			if (m_updateFrame)
 			{
-				m_currentCamera.transform.position = m_cameraTargetPos;
-				m_updateFrame = false;
+				if (bounds.Bounds.Contains(m_cameraTargetPos))
+				{
+					m_currentCamera.transform.position = m_cameraTargetPos;
+					m_updateFrame = false;
+				}
 			}
 		}
 		else
