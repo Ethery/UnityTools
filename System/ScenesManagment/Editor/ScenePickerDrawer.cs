@@ -33,9 +33,8 @@ public class ScenePickerDrawer : PropertyDrawer
 
 		for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
 		{
-			if (!string.IsNullOrEmpty(scenePath))
-				editorBuildSettingsScenes.Add(EditorBuildSettings.scenes[i]);
-			if (EditorBuildSettings.scenes[i].path == scenePath)
+			editorBuildSettingsScenes.Add(EditorBuildSettings.scenes[i]);
+			if (!string.IsNullOrEmpty(scenePath) && EditorBuildSettings.scenes[i].path == scenePath)
 			{
 				canLoad = true;
 			}

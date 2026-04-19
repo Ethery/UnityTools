@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
-using UnityEditor.Build.Content;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,13 +24,13 @@ public class EntryPointEnforcer : MonoBehaviour
 			{
 				Scene scene = EditorSceneManager.GetSceneAt(i);
 				m_scenes.Add(scene.path);
-				if(EditorSceneManager.GetSceneByBuildIndex(0) == scene)
+				if (EditorSceneManager.GetSceneByBuildIndex(0) == scene)
 				{
 					m_needLoadEntryPoint = false;
 				}
 			}
 
-			if(m_needLoadEntryPoint)
+			if (m_needLoadEntryPoint)
 			{
 				EditorSceneManager.LoadScene(0, LoadSceneMode.Single);
 				m_entryPointScene = EditorSceneManager.GetSceneByBuildIndex(0);
@@ -45,11 +42,15 @@ public class EntryPointEnforcer : MonoBehaviour
 
 	private static void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
 	{
-		if(m_entryPointScene==scene)
+		if (m_entryPointScene == scene)
 		{
 			foreach (GameObject root in m_entryPointScene.GetRootGameObjects())
 			{
-				root.GetComponentInChildren<EntryPoint>().OverridedScenesToLoad = m_scenes;
+				EntryPoint entry = root.GetComponentInChildren<EntryPoint>();
+				if (entry != null)
+				{
+					entry.OverridedScenesToLoad = m_scenes;
+				}
 			}
 		}
 	}
