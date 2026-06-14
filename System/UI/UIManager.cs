@@ -1,8 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityTools.Systems.Collections;
+using UnityTools.Systems.Inputs;
 
 namespace UnityTools.Systems.UI
 {
@@ -18,6 +18,16 @@ namespace UnityTools.Systems.UI
 
 		[SerializeField]
 		private Transform UICanvas;
+
+
+		[SerializeField]
+		private TMPro.TextMeshProUGUI m_DebugInfos;
+
+		private void Update()
+		{
+			InputManager.Instance.
+			foreach ()
+		}
 
 		#region Datas
 
@@ -35,8 +45,8 @@ namespace UnityTools.Systems.UI
 		public void DestroyPage(Guid pageId)
 		{
 			Page page = Page<Page>(pageId);
-			m_loaded.Remove(pageId);
 			GameObject.Destroy(page.gameObject);
+			m_loaded.Remove(pageId);
 		}
 
 		public void OnBeforeSerialize()

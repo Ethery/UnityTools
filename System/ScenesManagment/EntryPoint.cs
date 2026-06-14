@@ -17,7 +17,14 @@ public class EntryPoint : MonoBehaviour
 				{
 					string scene = OverridedScenesToLoad[i];
 					SceneManager.LoadScene(scene, i == 0 ? LoadSceneMode.Single : LoadSceneMode.Additive);
-					GameManager.Instance.StartGame();
+					if (GameManager.Instance.StartScene == scene)
+					{
+						GameManager.Instance.LoadStartScene();
+					}
+					else
+					{
+						GameManager.Instance.StartGameFromOverridedScene();
+					}
 				}
 			}
 			else

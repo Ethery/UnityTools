@@ -1,18 +1,9 @@
 using StateMachine;
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace UnityTools.Game
 {
-
-	public abstract class BaseGameRules : ScriptableObject
-	{ }
-
-	[Serializable]
-	public abstract class BaseGameDatas : MonoBehaviour
-	{ }
-
 	public abstract class GameManager : Singleton<GameManager>
 	{
 		public string StartScene => m_startScene.ScenePath;
@@ -22,36 +13,39 @@ namespace UnityTools.Game
 
 		public virtual void LoadStartScene()
 		{
+			Debug.Log($"loading {StartScene}");
 			SceneManager.LoadScene(StartScene);
 		}
 
 		/// <summary>
 		/// Called when loading any scene without save.
 		/// </summary>
-		public abstract void StartGame();
+		public abstract void StartGameFromOverridedScene();
 
 		/// <summary>
 		/// Called when asking to start a new game.
 		/// </summary>
-		public abstract void StartNewGame();
+		public abstract void StartANewGame();
 	}
 
 
-	public abstract class GameManager<T> : GameManager
-		where T : GameManager<T>
+	public abstract class GameManager<GAME_MANAGER_TYPE, GAME_DATAS_TYPE, GAME_RULES_TYPE> : GameManager
+		where GAME_MANAGER_TYPE : GameManager<GAME_MANAGER_TYPE, GAME_DATAS_TYPE, GAME_RULES_TYPE>
+		where GAME_DATAS_TYPE : BaseGameDatas
+		where GAME_RULES_TYPE : BaseGameRules
 	{
-		public new static T Instance => (T)GameManager.Instance;
+		public new static GAME_MANAGER_TYPE Instance => (GAME_MANAGER_TYPE)GameManager.Instance;
 
 		public StateMachine<GameState> GameStates;
 
-		public T GetGameRules<T>() where T : BaseGameRules
+		public GAME_RULES_TYPE GetGameRules()
 		{
-			return m_gameRules as T;
+			return m_gameRules as GAME_RULES_TYPE;
 		}
 
-		public T GetGameDatas<T>() where T : BaseGameDatas
+		public GAME_DATAS_TYPE GetGameDatas()
 		{
-			return m_gameDatas as T;
+			return m_gameDatas as GAME_DATAS_TYPE;
 		}
 
 		protected override void Awake()
@@ -75,26 +69,4 @@ namespace UnityTools.Game
 		[SerializeField]
 		private BaseGameDatas m_gameDatas;
 	}
-
-
-	public class DefaultGameState : GameState
-	{
-		public override bool CanTransitionTo(State requestedNewState)
-		{
-			return true;
-		}
-
-		public override void OnEnter(State previousState)
-		{
-		}
-
-		public override void OnExit(State nextState)
-		{
-		}
-
-		public override void Tick(float deltaTime)
-		{
-		}
-	}
-
 }
