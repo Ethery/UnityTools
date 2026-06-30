@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityTools.Systems.Collections;
-using UnityTools.Systems.Inputs;
 
 namespace UnityTools.Systems.UI
 {
@@ -22,12 +21,6 @@ namespace UnityTools.Systems.UI
 
 		[SerializeField]
 		private TMPro.TextMeshProUGUI m_DebugInfos;
-
-		private void Update()
-		{
-			InputManager.Instance.
-			foreach ()
-		}
 
 		#region Datas
 
